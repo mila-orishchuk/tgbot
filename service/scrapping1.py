@@ -32,7 +32,7 @@ def save_recipes_to_doc(soup, recipes):
         ingredients = ingredients_node.findAll(
             'span', {'itemprop': "recipeIngredient"})
         for ingredient in ingredients:
-            
+
             recipe_ingredients.append({
                 'name': get_item_by_class(ingredient, 'name'),
                 'quantity': get_item_by_class(ingredient, 'value'),

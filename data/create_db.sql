@@ -1,7 +1,6 @@
 CREATE DATABASE recipes;
 USE recipes;
 
-
 CREATE TABLE IF NOT EXISTS recipes (
     id                  bigserial PRIMARY KEY,
     recipes_name        varchar(256) NOT NULL,
@@ -9,7 +8,6 @@ CREATE TABLE IF NOT EXISTS recipes (
     description         text,
     portion             varchar(128) NOT NULL
 );
-
 
 CREATE TABLE IF NOT EXISTS ingredients (
     id                  bigserial PRIMARY KEY,
@@ -19,7 +17,6 @@ CREATE TABLE IF NOT EXISTS ingredients (
 
 );
 
-
 CREATE TABLE IF NOT EXISTS ingredientsrecipes (
     id                  bigserial PRIMARY KEY,
     ingredient_id       bigint REFERENCES ingredients(id) ON DELETE CASCADE,
@@ -28,14 +25,12 @@ CREATE TABLE IF NOT EXISTS ingredientsrecipes (
     PRIMARY KEY (ingredient_id, recipe_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS measurements (
     id                  bigserial PRIMARY KEY,
     unit                varchar(38),
     amount              int NOT NULL,
     metric_unit         varchar(38)
 );
-
 
 INSERT INTO 
     measurements (id, unit, amount, metric_unit)

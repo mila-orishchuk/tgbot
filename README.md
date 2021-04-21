@@ -1,5 +1,5 @@
 # Recipe Telegram Bot
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+![Python 3.9](https://img.shields.io/badge/python-v3.9-blue?style=flat)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 Do you need a recipe?

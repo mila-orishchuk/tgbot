@@ -15,4 +15,3 @@ class Ingredient:
     @property
     def unit(self):
         return self.unit
-    

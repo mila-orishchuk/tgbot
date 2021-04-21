@@ -20,3 +20,4 @@ class RecipeService:
     
     def add(self, recipe: Recipe):
         self.db.execute(f"INSERT INTO {self.TABLE}")
+        

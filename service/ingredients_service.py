@@ -1,22 +1,22 @@
-from ...entities.recipe import Recipe
+from ...entities.Ingredients import Ingredients
 
-class RecipeService:
+class IngredientService:
     
-    TABLE = "recipes"
+    TABLE = "ingredients"
     
     def __init__(self, *args, **kwargs):
         self.db = kwargs['db']
         if type(self.db) != 'Connection':
             raise Exception("invalid db variable passed to constructor")
         
-    def getAll(self) => Recipe[]:
-        recipies = []
+    def getAll(self) -> Ingredients[]:
+        ingredients = []
         result = self.db.execute(f"SELECT * FROM {self.TABLE}")
         if result:
             for row in result:
-                recipies.append(Recipe(row))
+                ingredients.append(Ingredients(row))
         
-        return recipies
+        return ingredients
     
-    def add(self, recipe: Recipe):
+    def add(self, ingredients: Ingredients):
         self.db.execute(f"INSERT INTO {self.TABLE}")

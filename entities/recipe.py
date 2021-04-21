@@ -26,4 +26,4 @@ class Recipe:
     
     @property
     def ingredients(self):
-        return self.ingredients    
+        return self.ingredients

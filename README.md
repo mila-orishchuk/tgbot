@@ -1,7 +1,7 @@
 # Recipe Telegram Bot
 ![Python 3.9](https://img.shields.io/badge/python-v3.9-blue?style=flat)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/mila-orishchuk/tgbot/blob/main/LICENSE)
 
 Do you need a recipe?
 

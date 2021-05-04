@@ -1,2 +1,4 @@
 .env
 tutorial-env
+.vscode
+db.sqlite

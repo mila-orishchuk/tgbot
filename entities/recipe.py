@@ -5,25 +5,13 @@ class Recipe:
     cooking_time: int
     
     def __init__(self, data: dict):
-        self.id = data['id']
+        if 'id' in data:
+            self.id = data['id']
         self.name = data['recipes_name']
         self.ingredients = data['ingredients']
-        self.image = data['image']
+        # self.image = data['image']
         self.link = data['link']
-        self.cooking_time = data['cooking_time']
-        
-    @property
-    def name(self):
+        # self.cooking_time = data['cooking_time']
+    
+    def __repr__(self):
         return self.name
-    
-    @property
-    def image(self):
-        return self.image
-    
-    @property
-    def link(self):
-        return self.link
-    
-    @property
-    def ingredients(self):
-        return self.ingredients

@@ -2,3 +2,4 @@
 tutorial-env
 .vscode
 db.sqlite
+__pycache__

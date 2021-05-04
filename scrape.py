@@ -1,4 +1,4 @@
-from service.scrapserv import WebScraper
+from service.scrape_service import WebScraper
 from service.parser import parse
 
 BASE_API_SEARCH_URL = 'https://menunedeli.ru'

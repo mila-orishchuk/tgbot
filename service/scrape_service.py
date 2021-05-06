@@ -25,7 +25,7 @@ class WebScraper:
         self._url = url
 
     @staticmethod
-    def _request(url: str):
+    def _request(url: str) -> (int, str):
         print(f'request to {url}')
         response = requests.get(url, headers=HEADERS)
         return response.status_code, response.content

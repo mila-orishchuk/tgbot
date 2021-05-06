@@ -4,16 +4,15 @@ CREATE TABLE IF NOT EXISTS recipes (
     id                  INTEGER PRIMARY KEY,
     recipes_name        VARCHAR(256) NOT NULL,
     cooking_time        INTEGER NOT NULL,
-    description         TEXT,
     url                 VARCHAR(256) NOT NULL,
-    img                 VARCHAR(256) NOT NULL,
-    portion             VARCHAR(128) NOT NULL
+    img                 VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS ingredients (
     id                  INTEGER PRIMARY KEY,
     name                VARCHAR(128) NOT NULL,
-    measurements_id     INTEGER REFERENCES measurements(id) ON DELETE CASCADE
+    description         TEXT,
+    -- measurements_id     INTEGER REFERENCES measurements(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ingredientsrecipes (

@@ -1,6 +1,8 @@
 import requests
 from requests.exceptions import HTTPError
 import logging
+from service.db_service import DbService
+from typing import List
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -19,9 +21,12 @@ class WebScraper:
             url (str): full HTML link to a page of search results.'''
 
     _path = '/'
+    
+    _db: DbService
 
     def __init__(self, deps: dict, url: str):
         self._parse = deps["parse"]
+        self._db = deps["db"]
         self._url = url
 
     @staticmethod
@@ -38,8 +43,9 @@ class WebScraper:
     def path(self, path: str):
         self._path = path
 
-    def save(self, data):
-        print(data)
+    def save(self, data: List[dict]):
+        for recipe_data in data:
+            self._db.save_recipe(recipe_data)
 
     def get_articles(self):
         page = 20

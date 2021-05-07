@@ -21,7 +21,7 @@ class WebScraper:
             url (str): full HTML link to a page of search results.'''
 
     _path = '/'
-    
+
     _db: DbService
 
     def __init__(self, deps: dict, url: str):
@@ -43,12 +43,18 @@ class WebScraper:
     def path(self, path: str):
         self._path = path
 
-    def save(self, data: List[dict]):
+    def save(self, data: List[dict], latest=None):
+        to_save = []        
         for recipe_data in data:
-            self._db.save_recipe(recipe_data)
+            if latest and latest.url == recipe_data['url']:
+                self._db.save_recipes(to_save)
+                raise Exception('Recipe already exists')
+            to_save.append(recipe_data)
+        self._db.save_recipes(to_save)        
 
     def get_articles(self):
-        page = 20
+        page = 18
+        latest = self._db.get_latest()
         while True:
             try:
                 code, content = self._request(
@@ -56,8 +62,11 @@ class WebScraper:
                 if code >= 400:
                     raise HTTPError(f'HTTP error occurred: {code}')
                 data = self._parse(content)
-                self.save(data)
+                self.save(data, latest)
                 page += 1
             except HTTPError as http_err:
                 print(http_err)
+                break
+            except Exception as e:
+                print(e)
                 break

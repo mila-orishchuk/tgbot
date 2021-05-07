@@ -15,8 +15,10 @@ scraper = WebScraper({
 
 scraper.path = '/zavtrak'
 # scraper.get_pages_links()
+print(len(db.get_all_recipes()))
 scraper.get_articles()
-
+print(len(db.get_all_recipes()))
+# print(db.get_latest_recipe().url)
 # scraper.set_path('/obed')
 # scraper.get_articles()
 

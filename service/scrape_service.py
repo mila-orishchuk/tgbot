@@ -1,6 +1,8 @@
 import requests
 from requests.exceptions import HTTPError
 import logging
+from service.db_service import DbService
+from typing import List
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -20,8 +22,11 @@ class WebScraper:
 
     _path = '/'
 
+    _db: DbService
+
     def __init__(self, deps: dict, url: str):
         self._parse = deps["parse"]
+        self._db = deps["db"]
         self._url = url
 
     @staticmethod
@@ -38,11 +43,20 @@ class WebScraper:
     def path(self, path: str):
         self._path = path
 
-    def save(self, data):
-        print(data)
+    def save(self, data: List[dict], latest=None):
+        to_save = []        
+        for recipe_data in data:
+            if latest and latest.url == recipe_data['url']:
+                self._db.save_recipes(to_save)
+                raise Exception('Recipe already exists')
+            to_save.append(recipe_data)
+        self._db.save_recipes(to_save)        
 
     def get_articles(self):
-        page = 20
+        #start from last page to 1st
+        
+        page = 18
+        latest = self._db.get_latest()
         while True:
             try:
                 code, content = self._request(
@@ -50,8 +64,11 @@ class WebScraper:
                 if code >= 400:
                     raise HTTPError(f'HTTP error occurred: {code}')
                 data = self._parse(content)
-                self.save(data)
+                self.save(data, latest)
                 page += 1
             except HTTPError as http_err:
                 print(http_err)
+                break
+            except Exception as e:
+                print(e)
                 break

@@ -1,4 +1,4 @@
-from model.recipe import Recipe
+from model.models import Recipe, Ingredient, History
 from base import Session, engine, Base
 
 
@@ -8,12 +8,12 @@ Base.metadata.create_all(engine)
 # create a new session
 # session = Session()
 
-# # create recipe
-# # recipe = Recipe("The Bourne Identity", "sdaghdc", "jhdh", 123)
+# create recipe
+# recipe = Recipe("The Bourne Identity", "sdaghdc", "jhdh", 123)
 
-# # persists data
+# persists data
 # session.add(recipe)
 
-# # commit and close session
+# commit and close session
 # session.commit()
 # session.close()

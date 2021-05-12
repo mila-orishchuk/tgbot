@@ -53,6 +53,8 @@ class WebScraper:
         self._db.save_recipes(to_save)        
 
     def get_articles(self):
+        #start from last page to 1st
+        
         page = 18
         latest = self._db.get_latest()
         while True:

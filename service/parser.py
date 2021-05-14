@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup
 from typing import List
 
 
-def get_last_page(soup: str):
-    print(soup.find('class': 'page-numbers').find_previous_sibling().text)
+# def get_last_page(soup: str):
+#     print(soup.find('class': 'page-numbers').find_previous_sibling().text)
 
 
 def get_soup(content: str) -> BeautifulSoup:

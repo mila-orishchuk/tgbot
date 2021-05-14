@@ -43,20 +43,17 @@ class WebScraper:
     def path(self, path: str):
         self._path = path
 
-    def save(self, data: List[dict], latest=None):
-        to_save = []        
-        for recipe_data in data:
-            if latest and latest.url == recipe_data['url']:
-                self._db.save_recipes(to_save)
-                raise Exception('Recipe already exists')
-            to_save.append(recipe_data)
-        self._db.save_recipes(to_save)        
+    def save(self, data: List[dict]):
+        to_save = []
+        try:
+            for recipe_data in data:
+                to_save.append(recipe_data)
+            self._db.save_recipes(to_save)
+        except Exception as e:
+            print(e)
 
     def get_articles(self):
-        #start from last page to 1st
-        
-        page = 18
-        latest = self._db.get_latest()
+        page = 20
         while True:
             try:
                 code, content = self._request(
@@ -64,7 +61,7 @@ class WebScraper:
                 if code >= 400:
                     raise HTTPError(f'HTTP error occurred: {code}')
                 data = self._parse(content)
-                self.save(data, latest)
+                self.save(data)
                 page += 1
             except HTTPError as http_err:
                 print(http_err)

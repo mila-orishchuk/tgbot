@@ -17,7 +17,7 @@ class Recipe(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column('name', String(256))
-    url = Column('url', String(256))
+    url = Column('url', String(256), unique=True)
     image = Column('image', String(256))
     ingredients = relationship(
         "Ingredient",
@@ -27,13 +27,6 @@ class Recipe(Base):
     )
     cooking_time = Column('cooking_time', String(256))
     history = relationship("History", backref="recipe", passive_deletes=True)
-
-    # def __init__(self, name, image, url, ingredients, cooking_time):
-    #     self.name = name
-    #     self.image = image
-    #     self.url = url
-    #     self.ingredients = ingredients
-    #     self.cooking_time = cooking_time
 
     def __repr__(self):
         return self.name
@@ -52,10 +45,6 @@ class Ingredient(Base):
         passive_deletes=True
     )
 
-    # def __init__(self, name, description):
-    #     self.name = name
-    #     self.description = description
-
     def __repr__(self):
         return self.name
 
@@ -69,10 +58,6 @@ class History(Base):
     user_id = Column('user_id', Integer)
     date = Column('date', DateTime)
     choise = Column('choise', Integer)
-
-    # def __init__(self, name, description):
-    #     self.name = name
-    #     self.description = description
 
     def __repr__(self):
         return self.choise

@@ -1,5 +1,5 @@
-from service.scrape_service import WebScraper
-from service.parser import parse
+from service.scrape_service import ScrapeService
+from service.parser import Parser
 from service.db_service import DbService
 from base import Session
 
@@ -8,17 +8,19 @@ BASE_API_SEARCH_URL = 'https://menunedeli.ru'
 session = Session()
 db = DbService(session)
 
-scraper = WebScraper({
-    "parse": parse,
-    "db": db
+scraper = ScrapeService({
+    "parser": Parser(),
+    "db": DbService(session)
 }, BASE_API_SEARCH_URL)
 
-path_list = ['/zavtrak']
+# path_list = [
+#     '/zavtrak','/chto-prigotovit-na-obed-i-uzhin', '/chto-prigotovit-na-poldnik']
 
-for scraper.path in path_list:
-    print(len(db.get_all_recipes()))
-    scraper.get_articles()
-    print(len(db.get_all_recipes()))
+# categories = db.get_all_categoties()
+
+print(len(db.get_all_recipes()))
+scraper.get_articles()
+print(len(db.get_all_recipes()))
 
     
 # scraper.path = '/zavtrak'

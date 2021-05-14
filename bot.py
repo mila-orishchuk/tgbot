@@ -22,6 +22,7 @@ logging.basicConfig(level=logging.INFO)
 session = Session()
 db = DbService(session)
 
+categories = db.get_all_categoties()
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
@@ -43,23 +44,21 @@ async def main_menu(chat_id):
 @dp.callback_query_handler(lambda call: call.data == "menu")
 async def callback_worker(callback_query: types.CallbackQuery):
     markup_inline = types.InlineKeyboardMarkup()
-    item_breakfast = types.InlineKeyboardButton(
-        text='Завтрак', callback_data='breakfast')
-    item_lunch = types.InlineKeyboardButton(
-        text='Обед', callback_data='lunch')
-    item_snack = types.InlineKeyboardButton(
-        text='Перекус', callback_data='snack')
-    item_dinner = types.InlineKeyboardButton(
-        text='Ужин', callback_data='dinner')
-    item_main = types.InlineKeyboardButton(
-        text='Главная', callback_data='main')
-    markup_inline.add(
-        item_breakfast,
-        item_lunch,
-        item_snack,
-        item_dinner,
-        item_main
-    )
+    items = []
+    for cat in categories:
+        items.append(
+            types.InlineKeyboardButton(text=cat.name, callback_data=cat.id)
+        )
+    # item_breakfast = types.InlineKeyboardButton(
+    #     text='Завтрак', callback_data='breakfast')
+    # item_lunch = types.InlineKeyboardButton(
+    #     text='Обед', callback_data='lunch')
+    # item_snack = types.InlineKeyboardButton(
+    #     text='Перекус', callback_data='snack')
+    # item_dinner = types.InlineKeyboardButton(
+    #     text='Ужин', callback_data='dinner')
+    items.append(types.InlineKeyboardButton(text='Главная', callback_data='main'))
+    markup_inline.add(*items)
     await bot.send_message(
         callback_query.message.chat.id, "Выберите один из предложенных вариантов",
         reply_markup=markup_inline
@@ -67,9 +66,9 @@ async def callback_worker(callback_query: types.CallbackQuery):
     await callback_query.message.delete()
 
 
-@dp.callback_query_handler(lambda call: call.data == "breakfast")
-async def callback_main(callback_query: types.CallbackQuery):
-    await db.get_random_recipe()
+# @dp.callback_query_handler(lambda call: call.data == "breakfast")
+# async def callback_main(callback_query: types.CallbackQuery):
+#     await db.get_random_recipe()
 
 
 @dp.callback_query_handler(lambda call: call.data == "main")

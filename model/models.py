@@ -3,12 +3,20 @@ from base import Base
 from sqlalchemy.orm import relationship, backref
 
 
-association_table = Table('recipe_ingredients', Base.metadata,
+recipes_ingredients_table = Table('recipes_ingredients', Base.metadata,
                           Column('id', Integer, primary_key=True),
                           Column('recipe_id', Integer, ForeignKey(
                               'recipe.id', ondelete="CASCADE")),
                           Column('ingredient_id', Integer, ForeignKey(
                               'ingredient.id', ondelete="CASCADE"))
+                          )
+
+recipes_categories_table = Table('recipes_categories', Base.metadata,
+                          Column('id', Integer, primary_key=True),
+                          Column('recipe_id', Integer, ForeignKey(
+                              'recipe.id', ondelete="CASCADE")),
+                          Column('category_id', Integer, ForeignKey(
+                              'category.id', ondelete="CASCADE"))
                           )
 
 
@@ -19,13 +27,20 @@ class Recipe(Base):
     name = Column('name', String(256))
     url = Column('url', String(256), unique=True)
     image = Column('image', String(256))
+    cooking_time = Column('cooking_time', String(256))
     ingredients = relationship(
         "Ingredient",
-        secondary=association_table,
+        secondary=recipes_ingredients_table,
         back_populates="recipes",
         cascade="all, delete",
     )
-    cooking_time = Column('cooking_time', String(256))
+    categories = relationship(
+        "Category",
+        secondary=recipes_categories_table,
+        back_populates="recipes",
+        cascade="all, delete",
+    )
+
     history = relationship("History", backref="recipe", passive_deletes=True)
 
     def __repr__(self):
@@ -40,11 +55,28 @@ class Ingredient(Base):
     description = Column('description', String(256))
     recipes = relationship(
         "Recipe",
-        secondary=association_table,
+        secondary=recipes_ingredients_table,
         back_populates="ingredients",
         passive_deletes=True
     )
 
+    def __repr__(self):
+        return self.name
+
+
+class Category(Base):
+    __tablename__ = 'category'
+
+    id = Column(Integer, primary_key=True)
+    url = Column('url', String(256))
+    name = Column('name', String(256))
+    recipes = relationship(
+        "Recipe",
+        secondary=recipes_categories_table,
+        back_populates="categories",
+        cascade="all, delete",
+    )
+    
     def __repr__(self):
         return self.name
 

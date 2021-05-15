@@ -1,11 +1,8 @@
 from sqlalchemy import desc
-from  sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func
 from typing import List
-from model.models import Recipe, Ingredient, History, Category
-# import logging
+from model.models import Recipe, Ingredient, History, Category, recipes_categories_table
 
-# logging.basicConfig()
-# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 class DbService:
     def __init__(self, session):
@@ -27,6 +24,12 @@ class DbService:
 
         self._session.commit()
 
+    def save_recipes_categories(self, rows: List[dict]):
+        for row in rows:
+            stmt = recipes_categories_table.insert().values(**row)
+            self._session.execute(stmt)
+        self._session.commit()
+
     def get_all_urls(self):
         return [*map(
             lambda row: row[0],
@@ -38,9 +41,9 @@ class DbService:
 
     def get_random_recipe(self, category):
         return self._session.query(Recipe).order_by(func.rand()).first()
-    
+
     def get_all_categoties(self):
         return self._session.query(Category).all()
-    
-    def get_by_url(sqlf, url):
+
+    def get_by_url(self, url):
         return self._session.query(Recipe).where(Recipe.url == url).first()

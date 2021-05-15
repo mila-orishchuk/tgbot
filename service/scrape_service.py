@@ -20,8 +20,6 @@ class ScrapeService:
         Args:
             url (str): full HTML link to a page of search results.'''
 
-    _path = '/'
-
     _db: DbService
 
     def __init__(self, deps: dict, url: str):
@@ -35,16 +33,9 @@ class ScrapeService:
         response = requests.get(url, headers=HEADERS)
         return response.status_code, response.content
 
-    @property
-    def path(self):
-        return self._path
-
-    @path.setter
-    def path(self, path: str):
-        self._path = path
-
     def save(self, data: List[dict], urls: List[str], category):
         to_save = []
+        to_save_relations = []
         try:
             for recipe_data in data:
                 if recipe_data["url"] not in urls:
@@ -52,18 +43,22 @@ class ScrapeService:
                     to_save.append(recipe_data)
                 else:
                     recipe = self._db.get_by_url(recipe_data["url"])
-                    recipe.categories.append(category)
-                    to_save.append(recipe_data)
+                    to_save_relations.append({
+                        "recipe_id": recipe.id,
+                        "category_id": category.id
+                    })
             if to_save:
                 self._db.save_recipes(to_save)
+            if to_save_relations:
+                self._db.save_recipes_categories(to_save_relations)
         except Exception as e:
             print(e)
 
     def get_articles(self):
         categories = self._db.get_all_categoties()
-        urls = self._db.get_all_urls()
         for cat in categories:
-            page = 21
+            urls = self._db.get_all_urls()
+            page = 1
             while True:
                 try:
                     code, content = self._request(

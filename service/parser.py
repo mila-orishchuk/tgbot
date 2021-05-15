@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup
 from typing import List
 
+
 class Parser:
     def _get_soup(self, content: str) -> BeautifulSoup:
         return BeautifulSoup(content.decode('utf-8'), 'html.parser')
-
 
     def _get_ingredients(self, ingredients_nodes: List[BeautifulSoup]) -> List[dict]:
         ingredients = []
@@ -15,7 +15,6 @@ class Parser:
             })
 
         return ingredients
-
 
     def _get_recipe(self, article: BeautifulSoup) -> dict:
         recipe = None
@@ -31,17 +30,15 @@ class Parser:
                     'ul', {'class': 'params-detail-lst row'}).find('span', {'class': 'duration'}).text,
                 'ingredients': self._get_ingredients(
                     article.find('ul', {'class': 'ingredients-lst'}
-                                ).findAll('span', {'itemprop': 'recipeIngredient'}))
+                                 ).findAll('span', {'itemprop': 'recipeIngredient'}))
             }
         except:
             pass
         return recipe
 
-
     def _get_item_by_class(self, ingredient: BeautifulSoup, class_name: str) -> str:
         item = ingredient.find('span', {'class': class_name})
         return item.text if item else ''
-
 
     def _get_recipes(self, soup: BeautifulSoup) -> List[dict]:
         recipes = []
@@ -52,7 +49,6 @@ class Parser:
                 recipes.append(recipe)
 
         return recipes
-
 
     def get_data(self, content: str) -> List[dict]:
         soup_obj = self._get_soup(content)

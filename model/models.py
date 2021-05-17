@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, Table, DateTime, ForeignKey
 from base import Base
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.sql.expression import func
 
 
 recipes_ingredients_table = Table('recipes_ingredients', Base.metadata,
@@ -45,6 +46,14 @@ class Recipe(Base):
 
     def __repr__(self):
         return self.name
+    
+    def __str__(self):
+        ingredients = '\n       '.join(map(str, self.ingredients))
+        return f'''<b>{self.name}</b>
+    Время готовки: {self.cooking_time}
+    Ингредиенты:
+       {ingredients}
+   '''
 
 
 class Ingredient(Base):
@@ -61,7 +70,7 @@ class Ingredient(Base):
     )
 
     def __repr__(self):
-        return self.name
+        return f"{self.description}"
 
 
 class Category(Base):
@@ -88,7 +97,7 @@ class History(Base):
     recipe_id = Column('recipe_id', Integer, ForeignKey(
         "recipe.id", ondelete='CASCADE'))
     user_id = Column('user_id', Integer)
-    date = Column('date', DateTime)
+    date = Column('date', DateTime, default=func.now())
     choise = Column('choise', Integer)
 
     def __repr__(self):

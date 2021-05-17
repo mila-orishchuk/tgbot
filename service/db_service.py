@@ -39,11 +39,19 @@ class DbService:
     def get_all_recipes(self):
         return self._session.query(Recipe).all()
 
-    def get_random_recipe(self, category):
-        return self._session.query(Recipe).order_by(func.rand()).first()
+    def get_random_recipe(self, category_id):
+        return self._session.query(Recipe).order_by(func.random()).first()
 
     def get_all_categoties(self):
         return self._session.query(Category).all()
 
     def get_by_url(self, url):
         return self._session.query(Recipe).where(Recipe.url == url).first()
+
+    def get_recipe_by_id(self, id):
+        return self._session.query(Recipe).where(Recipe.id == id).first()
+    
+    def save_choise(self, choise, recipe_id, user_id):
+        history = History(recipe_id=recipe_id, user_id=user_id, choise=choise)
+        self._session.add(history)
+        self._session.commit()

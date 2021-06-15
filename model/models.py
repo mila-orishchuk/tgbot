@@ -102,3 +102,12 @@ class History(Base):
 
     def __repr__(self):
         return self.choise
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column('user_id', Integer)
+
+    def __repr__(self):
+        return self.user_id
